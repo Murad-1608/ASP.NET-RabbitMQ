@@ -9,12 +9,37 @@ using var connection = factory.CreateConnection();
 
 var channel = connection.CreateModel();
 
-channel.QueueDeclare("hello-queue", true, false, false);
+channel.ExchangeDeclare("direct-log-test", durable: true, type: ExchangeType.Direct);
 
-string message = "Hello world";
+Enum.GetNames(typeof(LogNames)).ToList().ForEach(name =>
+{
+    var routeKey = $"direct-{name}";
+    var queueName = $"direct-queue-{name}";
 
-var messageAsByte = Encoding.UTF8.GetBytes(message);
+    channel.QueueDeclare(queueName, true, false, false);
 
-channel.BasicPublish(string.Empty, "hello-queue", null, messageAsByte);
+    channel.QueueBind(queueName, "direct-log-test", routeKey);
+});
 
-Console.WriteLine("Message send completed");
+Enumerable.Range(1, 50).ToList().ForEach(x =>
+{
+    var log = (LogNames)new Random().Next(1, 4);
+
+    var randomRoute = $"direct-{log}";
+
+    string message = $"Message {x} - {randomRoute}";
+
+    var messageAsByte = Encoding.UTF8.GetBytes(message);
+
+    channel.BasicPublish("direct-log-test", randomRoute, null, messageAsByte);
+
+    Console.WriteLine("Mesaj: " + message);
+});
+
+
+enum LogNames
+{
+    Error = 1,
+    Warning,
+    Success,
+}

@@ -10,14 +10,32 @@ using var connection = factory.CreateConnection();
 
 var channel = connection.CreateModel();
 
+var queueName = "direct-queue-Success";
+
+
+//channel.BasicQos(0, 1, false);  // Neçə-neçə gondərəcək. False olanda hər birinə yazıldığı kimi, true olanda yarı-yarı
+
 //channel.QueueDeclare("hello-queue", true, false, false);
+
 var consumer = new EventingBasicConsumer(channel);
 
-channel.BasicConsume("hello-queue", true, consumer);
+channel.BasicConsume(queueName, false, consumer);
+
+Console.WriteLine("Loglar başladılır....");
 
 consumer.Received += (object? sender, BasicDeliverEventArgs e) =>
 {
-    var message = Encoding.UTF8.GetString(e.Body.ToArray());
+    try
+    {
+        var message = Encoding.UTF8.GetString(e.Body.ToArray());
+        Thread.Sleep(1000);
+        Console.WriteLine("Gelen mesaj: " + message);
 
-    Console.WriteLine("Gelen mesaj: " + message);
+        channel.BasicAck(e.DeliveryTag, false);
+    }
+    catch (Exception)
+    {
+        throw;
+    }
+
 };
