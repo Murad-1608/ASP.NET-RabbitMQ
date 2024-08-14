@@ -1,45 +1,52 @@
 ﻿using RabbitMQ.Client;
 using System.Text;
 
-var factory = new ConnectionFactory();
+DirectExchange();
 
-factory.Uri = new Uri(@"amqps://jfkwbydf:H1aKLn77-MY-ERbXzJt5eyPGBJLznH29@octopus.rmq3.cloudamqp.com/jfkwbydf");
 
-using var connection = factory.CreateConnection();
-
-var channel = connection.CreateModel();
-
-channel.ExchangeDeclare("direct-log-test", durable: true, type: ExchangeType.Direct);
-
-Enum.GetNames(typeof(LogNames)).ToList().ForEach(name =>
+static void DirectExchange()
 {
-    var routeKey = $"direct-{name}";
-    var queueName = $"direct-queue-{name}";
+    var factory = new ConnectionFactory();
 
-    channel.QueueDeclare(queueName, true, false, false);
+    factory.Uri = new Uri(@"amqps://jfkwbydf:H1aKLn77-MY-ERbXzJt5eyPGBJLznH29@octopus.rmq3.cloudamqp.com/jfkwbydf");
 
-    channel.QueueBind(queueName, "direct-log-test", routeKey);
-});
+    using var connection = factory.CreateConnection();
 
-Enumerable.Range(1, 50).ToList().ForEach(x =>
-{
-    var log = (LogNames)new Random().Next(1, 4);
+    var channel = connection.CreateModel();
 
-    var randomRoute = $"direct-{log}";
+    channel.ExchangeDeclare("direct-log-test", durable: true, type: ExchangeType.Direct);
 
-    string message = $"Message {x} - {randomRoute}";
+    Enum.GetNames(typeof(LogNames)).ToList().ForEach(name =>
+    {
+        var routeKey = $"direct-{name}";
+        var queueName = $"direct-queue-{name}";
 
-    var messageAsByte = Encoding.UTF8.GetBytes(message);
+        channel.QueueDeclare(queueName, true, false, false);
 
-    channel.BasicPublish("direct-log-test", randomRoute, null, messageAsByte);
+        channel.QueueBind(queueName, "direct-log-test", routeKey);
+    });
 
-    Console.WriteLine("Mesaj: " + message);
-});
+    Enumerable.Range(1, 50).ToList().ForEach(x =>
+    {
+        var log = (LogNames)new Random().Next(1, 4);
 
+        var randomRoute = $"direct-{log}";
 
+        string message = $"Message {x} - {randomRoute}";
+
+        var messageAsByte = Encoding.UTF8.GetBytes(message);
+
+        channel.BasicPublish("direct-log-test", randomRoute, null, messageAsByte);
+
+        Console.WriteLine("Mesaj: " + message);
+    });
+
+}
 enum LogNames
 {
     Error = 1,
     Warning,
     Success,
 }
+
+
