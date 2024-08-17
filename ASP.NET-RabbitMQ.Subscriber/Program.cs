@@ -10,12 +10,13 @@ using var connection = factory.CreateConnection();
 
 var channel = connection.CreateModel();
 
-var queueName = "direct-queue-Success";
+var queueName = "Test-queue";
+var routeKey = "*.Error.*";
+
+channel.QueueDeclare(queueName, true, false, false);
 
 
-//channel.BasicQos(0, 1, false);  // Neçə-neçə gondərəcək. False olanda hər birinə yazıldığı kimi, true olanda yarı-yarı
-
-//channel.QueueDeclare("hello-queue", true, false, false);
+channel.QueueBind(queueName, "log-topic", routeKey, null);
 
 var consumer = new EventingBasicConsumer(channel);
 
