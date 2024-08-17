@@ -10,13 +10,16 @@ using var connection = factory.CreateConnection();
 
 var channel = connection.CreateModel();
 
-var queueName = "Test-queue";
-var routeKey = "*.Error.*";
+var queueName = "header-queue";
 
 channel.QueueDeclare(queueName, true, false, false);
 
+Dictionary<string, object> headers = new Dictionary<string, object>();
+headers.Add("type", "pdf");
+headers.Add("content", "text");
+headers.Add("x-match", "all");
 
-channel.QueueBind(queueName, "log-topic", routeKey, null);
+channel.QueueBind(queueName, "header-exchange", "", headers);
 
 var consumer = new EventingBasicConsumer(channel);
 
@@ -33,6 +36,8 @@ consumer.Received += (object? sender, BasicDeliverEventArgs e) =>
         Console.WriteLine("Gelen mesaj: " + message);
 
         channel.BasicAck(e.DeliveryTag, false);
+
+        Console.ReadLine();
     }
     catch (Exception)
     {

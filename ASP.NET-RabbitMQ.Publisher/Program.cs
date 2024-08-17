@@ -1,7 +1,7 @@
 ﻿using RabbitMQ.Client;
 using System.Text;
 
-TopicExchange();
+HeaderExchange();
 
 
 static void DirectExchange()
@@ -42,7 +42,6 @@ static void DirectExchange()
     });
 
 }
-
 static void TopicExchange()
 {
     var factory = new ConnectionFactory();
@@ -76,6 +75,28 @@ static void TopicExchange()
     });
 
 
+
+}
+static void HeaderExchange()
+{
+    var factory = new ConnectionFactory();
+
+    factory.Uri = new Uri(@"amqps://jfkwbydf:H1aKLn77-MY-ERbXzJt5eyPGBJLznH29@octopus.rmq3.cloudamqp.com/jfkwbydf");
+
+    var connection = factory.CreateConnection();
+
+    var channel = connection.CreateModel();
+
+    channel.ExchangeDeclare("header-exchange", ExchangeType.Headers, durable: false);
+
+    Dictionary<string, object> headers = new Dictionary<string, object>();
+    headers.Add("type", "pdf");
+    headers.Add("content", "text");
+    var properties = channel.CreateBasicProperties();
+    properties.Headers = headers;
+    var message = Encoding.UTF8.GetBytes("Bu test mesajidir");
+
+    channel.BasicPublish("header-exchange", "", properties, message);
 
 }
 enum LogNames

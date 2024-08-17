@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35027.167
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASP.NET-RabbitMQ.Publisher", "ASP.NET-RabbitMQ.Publisher\ASP.NET-RabbitMQ.Publisher.csproj", "{12C70B4F-6CE0-49E0-ADA7-AC07C2C587F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ASP.NET-RabbitMQ.Publisher", "ASP.NET-RabbitMQ.Publisher\ASP.NET-RabbitMQ.Publisher.csproj", "{12C70B4F-6CE0-49E0-ADA7-AC07C2C587F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASP.NET-RabbitMQ.Subscriber", "ASP.NET-RabbitMQ.Subscriber\ASP.NET-RabbitMQ.Subscriber.csproj", "{DF159DD1-15D3-4BD1-85BA-75C3C48E25C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ASP.NET-RabbitMQ.Subscriber", "ASP.NET-RabbitMQ.Subscriber\ASP.NET-RabbitMQ.Subscriber.csproj", "{DF159DD1-15D3-4BD1-85BA-75C3C48E25C9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASP.NET-RabbitMQ.Watermark", "ASP.NET-RabbitMQ.Watermark\ASP.NET-RabbitMQ.Watermark.csproj", "{4FED557C-F821-4784-96EA-D41EBC913CD0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{DF159DD1-15D3-4BD1-85BA-75C3C48E25C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF159DD1-15D3-4BD1-85BA-75C3C48E25C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF159DD1-15D3-4BD1-85BA-75C3C48E25C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FED557C-F821-4784-96EA-D41EBC913CD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FED557C-F821-4784-96EA-D41EBC913CD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FED557C-F821-4784-96EA-D41EBC913CD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FED557C-F821-4784-96EA-D41EBC913CD0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
