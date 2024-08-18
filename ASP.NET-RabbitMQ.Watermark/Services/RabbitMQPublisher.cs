@@ -22,7 +22,7 @@ namespace ASP.NET_RabbitMQ.Watermark.Services
             var properties = channel.CreateBasicProperties();
             properties.Persistent = true;
 
-            channel.BasicPublish(exchange: RabbitMQClientService.ExchangeName, basicProperties: properties, routingKey: RabbitMQClientService.RoutingWatermark, body: bodyByte);
+            channel.BasicPublish(exchange: RabbitMQClientService.ExchangeName, basicProperties: properties, routingKey: RabbitMQClientService.RoutingWatermark, body: bodyByte, mandatory: false);
         }
     }
 }

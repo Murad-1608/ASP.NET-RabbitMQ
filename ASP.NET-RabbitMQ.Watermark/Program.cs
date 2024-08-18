@@ -1,3 +1,4 @@
+using ASP.NET_RabbitMQ.Watermark.BackgroundServices;
 using ASP.NET_RabbitMQ.Watermark.Models;
 using ASP.NET_RabbitMQ.Watermark.Services;
 using Microsoft.EntityFrameworkCore;
@@ -11,8 +12,9 @@ builder.Services.AddDbContext<AppDbContext>((options) =>
 {
     options.UseInMemoryDatabase(databaseName: "DB");
 });
-builder.Services.AddSingleton(sp => new ConnectionFactory() { Uri = new Uri(builder.Configuration.GetConnectionString("RabbitMQ")) });
+builder.Services.AddSingleton(sp => new ConnectionFactory() { Uri = new Uri(builder.Configuration.GetConnectionString("RabbitMQ")), DispatchConsumersAsync = true });
 
+builder.Services.AddHostedService<ImageWatermarkProcessBackgroundService>();
 builder.Services.AddSingleton<RabbitMQClientService>();
 builder.Services.AddSingleton<RabbitMQPublisher>();
 
