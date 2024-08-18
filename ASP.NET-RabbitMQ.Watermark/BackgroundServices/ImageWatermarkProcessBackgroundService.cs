@@ -45,7 +45,7 @@ namespace ASP.NET_RabbitMQ.Watermark.BackgroundServices
                 var imageCreatedEvent = JsonSerializer.Deserialize<ProductImageCreatedEvent>(Encoding.UTF8.GetString(@event.Body.ToArray()));
 
 
-                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", imageCreatedEvent.ImageName);
+                var path = Path.Combine(Directory.GetCurrentDirectory(), @"wwwrooot\images", imageCreatedEvent.ImageName);
 
                 using var img = Image.FromFile(path);
 
@@ -65,7 +65,7 @@ namespace ASP.NET_RabbitMQ.Watermark.BackgroundServices
 
                 graphic.DrawString("www.mysite.com", font, brush, position);
 
-                img.Save("wwwroot/images/watermarks/" + imageCreatedEvent.ImageName);
+                img.Save(@"wwwroot\images\watermarks\" + imageCreatedEvent.ImageName);
 
                 img.Dispose();
                 graphic.Dispose();
